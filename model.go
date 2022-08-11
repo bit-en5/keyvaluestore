@@ -2,10 +2,6 @@ package keyvaluestore
 
 import "sync"
 
-const (
-	dbname = "data.kvs"
-)
-
 type KeyValueStore struct {
 	mux      sync.Mutex
 	keyvalue map[string]int
@@ -14,9 +10,9 @@ type KeyValueStore struct {
 }
 
 // New constructs and returns a cache service
-func New() *KeyValueStore {
+func New(dbName string) *KeyValueStore {
 	return &KeyValueStore{
 		keyvalue: make(map[string]int),
-		filename: dbname,
+		filename: dbName,
 	}
 }

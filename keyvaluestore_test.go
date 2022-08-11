@@ -5,11 +5,15 @@ import (
 	"testing"
 )
 
+const (
+	dbname = "test1.kvs"
+)
+
 func TestCache(t *testing.T) {
 	want1 := 150
 	want2 := 81
 
-	cache := New()
+	cache := New(dbname)
 	cache.Set("value1", want1)
 	cache.Set("value2", want2)
 
@@ -38,7 +42,7 @@ func TestCache(t *testing.T) {
 }
 
 func TestPersistance1(t *testing.T) {
-	cache := New()
+	cache := New(dbname)
 	path := cache.getFileName()
 	fmt.Println(path)
 
@@ -52,7 +56,7 @@ func TestPersistance1(t *testing.T) {
 }
 
 func TestPersistance2(t *testing.T) {
-	cache := New()
+	cache := New(dbname)
 	err := cache.Read()
 	if err != nil {
 		t.Error(err)

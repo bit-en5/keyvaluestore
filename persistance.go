@@ -7,6 +7,10 @@ import (
 
 // Save persists the key-value store on disk
 func (s *KeyValueStore) Save() error {
+	if s.filename == "" {
+		return nil
+	}
+
 	data, err := json.Marshal(s.keyvalue)
 	if err != nil {
 		return err
@@ -17,6 +21,10 @@ func (s *KeyValueStore) Save() error {
 
 // Read read the key-value store from disk
 func (s *KeyValueStore) Read() error {
+	if s.filename == "" {
+		return nil
+	}
+
 	data, err := os.ReadFile(s.getFileName())
 	if err != nil {
 		return err
