@@ -11,12 +11,19 @@ func (s *KeyValueStore) Save() error {
 		return nil
 	}
 
-	data, err := json.Marshal(s.keyvalue)
+	data, err := s.serialize()
 	if err != nil {
 		return err
 	}
 
 	return os.WriteFile(s.getFileName(), data, 0777)
+}
+
+func (s *KeyValueStore) serialize() ([]byte, error) {
+	s.mux.Lock()
+	defer s.mux.Unlock()
+
+	return json.Marshal(s.keyvalue)
 }
 
 // Read read the key-value store from disk
