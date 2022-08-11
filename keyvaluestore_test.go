@@ -37,8 +37,43 @@ func TestCache(t *testing.T) {
 	}
 }
 
-func TestPersistance(t *testing.T) {
+func TestPersistance1(t *testing.T) {
 	cache := New()
 	path := cache.getFileName()
 	fmt.Println(path)
+
+	cache.Set("value1", 100)
+	cache.Set("value2", 200)
+
+	err := cache.Save()
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestPersistance2(t *testing.T) {
+	cache := New()
+	err := cache.Read()
+	if err != nil {
+		t.Error(err)
+	}
+
+	path := cache.getFileName()
+	fmt.Println(path)
+
+	v1, found1 := cache.Get("value1")
+	v2, found2 := cache.Get("value2")
+
+	if !found1 || v1 == 0 {
+		t.Error("error by read value1")
+	}
+	if !found2 || v2 == 0 {
+		t.Error("error by read value2")
+	}
+	if v1 != 100 {
+		t.Error("error by read value1")
+	}
+	if v2 != 200 {
+		t.Error("error by read value1")
+	}
 }
