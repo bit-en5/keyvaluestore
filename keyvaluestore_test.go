@@ -49,7 +49,7 @@ func TestPersistance1(t *testing.T) {
 	cache.Set("value1", 100)
 	cache.Set("value2", 200)
 
-	err := cache.Save()
+	err := cache.Save(false)
 	if err != nil {
 		t.Error(err)
 	}

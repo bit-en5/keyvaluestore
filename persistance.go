@@ -6,12 +6,12 @@ import (
 )
 
 // Save persists the key-value store on disk
-func (s *KeyValueStore) Save() error {
+func (s *KeyValueStore) Save(safe bool) error {
 	if s.filename == "" {
 		return nil
 	}
 
-	data, err := s.serialize()
+	data, err := s.serialize(safe)
 	if err != nil {
 		return err
 	}
@@ -19,9 +19,11 @@ func (s *KeyValueStore) Save() error {
 	return os.WriteFile(s.getFileName(), data, 0777)
 }
 
-func (s *KeyValueStore) serialize() ([]byte, error) {
-	s.mux.Lock()
-	defer s.mux.Unlock()
+func (s *KeyValueStore) serialize(safe bool) ([]byte, error) {
+	if safe {
+		s.mux.Lock()
+		defer s.mux.Unlock()
+	}
 
 	return json.Marshal(s.keyvalue)
 }
